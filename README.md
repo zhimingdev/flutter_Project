@@ -3,8 +3,8 @@
 A new Flutter application.
 
 # 目前已实现功能
- * **1.登录/注册
- * **2.首页banner
+ * **1.登录/注册**
+ * **2.首页banner**
   
 # 感谢
  * **鸿洋大神的 玩Android 开放API**
