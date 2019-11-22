@@ -2,13 +2,13 @@
 
 A new Flutter application.
 
-# 目前已事项功能
- * 1.登录/注册
- * 2.首页banner
+# 目前已实现功能
+ * **1.登录/注册
+ * **2.首页banner
   
 # 感谢
- * 鸿洋大神的 玩Android 开放API
- * 干货集中营 API 
+ * **鸿洋大神的 玩Android 开放API**
+ * **干货集中营 API** 
 
 ## Getting Started
 
