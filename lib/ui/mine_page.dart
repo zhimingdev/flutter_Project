@@ -119,10 +119,7 @@ class MinePageState extends State<MinePage> {
                     alignment: Alignment.center,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(6.0),
-                      child: FadeInImage.assetNetwork(
-                        placeholder: defaultImage,
-                        image: path,
-                      ),
+                      child: isLogin ? Image.network(path):Image.asset(defaultImage),
                     ),
                   ),
                   flex: 1,

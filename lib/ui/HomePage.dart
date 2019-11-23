@@ -10,8 +10,8 @@ import 'package:flutter_app/router/Routers.dart';
 import 'package:flutter_app/module/user_module.dart';
 import 'package:flutter_app/application.dart';
 import 'package:flutter_app/event/login_event.dart';
-import 'package:flutter_app/constans/colors_page.dart';
 import 'package:flutter_app/utils/customdialog_page.dart';
+import 'package:flutter_app/res/colors.dart';
 
 class HomePage extends StatefulWidget {
   //  final String message;
@@ -77,7 +77,7 @@ class _Home extends State<HomePage> {
             index: _selectedIndex,
           ),
           bottomNavigationBar: BottomNavigationBar(
-            selectedItemColor: CommonColors.theme_color,
+            selectedItemColor: Colours.theme_color,
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                   icon: Icon(getTabIcon(0)),
@@ -127,7 +127,7 @@ class _Home extends State<HomePage> {
               content:'确定退出应用吗？',
               cancelContent: '再看一会',
               confirmContent: '残忍退出',
-              confirmTextColor: CommonColors.theme_color,
+              confirmTextColor: Colours.theme_color,
               confirmCallback: () {
                 SystemNavigator.pop();
               }

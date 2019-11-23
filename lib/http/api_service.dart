@@ -4,6 +4,7 @@ import 'package:flutter_app/http/api.dart';
 import 'package:flutter_app/module/user_module_entity.dart';
 import 'package:flutter_app/module/user_module.dart';
 import 'package:flutter_app/module/home_banner_entity.dart';
+import 'package:flutter_app/module/home_data_entity.dart';
 
 class ApiService {
 
@@ -44,6 +45,15 @@ class ApiService {
         .get(Api.HOME_BANNER)
         .then((response) {
         callback(HomeBannerEntity(response.data));
+    });
+  }
+
+  ///首页文章列表
+  void homedata(String page,Function callback) async {
+    DioManager.getInstance().dio
+        .get(Api.HOME_DATA+page+'/json')
+        .then((response) {
+        callback(HomeDataEntity(response.data));
     });
   }
 
