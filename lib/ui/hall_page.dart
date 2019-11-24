@@ -31,7 +31,7 @@ class HallPageState extends State<HallPage> {
     // TODO: implement initState
     super.initState();
     _onRefresh();
-    //滑到了底部，加载更多
+//    滑到了底部，加载更多
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
@@ -140,15 +140,14 @@ class HallPageState extends State<HallPage> {
           iconNext: null,
           iconPrevious: null,
         ),
+        loop: false,
         itemBuilder: (BuildContext context, int index) {
-          if (images[index] == null || images[index].imagePath == null) {
+          if (images == null || images.isEmpty ||images[index] == null || images[index].imagePath == null) {
             return Container(color: Colors.grey[100]);
           } else {
             return GestureDetector(
               child: Image.network(
-                  images[index].imagePath == null
-                      ? 'http://via.placeholder.com/288x188'
-                      : images[index].imagePath,
+                  images[index].imagePath,
                   fit: BoxFit.fill),
               onTap: () {
                 String newtitle = images[index].title;
@@ -161,7 +160,7 @@ class HallPageState extends State<HallPage> {
         },
         itemCount: images.length,
         autoplay: true,
-      ),
+      )
     );
   }
 

@@ -14,8 +14,10 @@ class MinePage extends StatefulWidget {
 class MinePageState extends State<MinePage> {
   String username = "未登录";
   String path = "";
-  String defaultImage = "images/img_mine.png";
+  String defaultImage = "assets/images/img_mine.png";
   bool isLogin = false;
+  var menuImage = ["zhls", "zjgl", "txzh"];
+  var menuTitle = ["账户流水", "资金管理", "提现账号"];
 
   @override
   void initState() {
@@ -57,6 +59,7 @@ class MinePageState extends State<MinePage> {
       body: Column(
         children: <Widget>[
           _topView(),
+          _account(),
           settingView(),
         ],
       ),
@@ -119,7 +122,8 @@ class MinePageState extends State<MinePage> {
                     alignment: Alignment.center,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(6.0),
-                      child: isLogin ? Image.network(path):Image.asset(defaultImage),
+                      child: isLogin ? FadeInImage.assetNetwork(image: path,placeholder: defaultImage,)
+                          :Image.asset(defaultImage),
                     ),
                   ),
                   flex: 1,
@@ -158,7 +162,7 @@ class MinePageState extends State<MinePage> {
                       children: <Widget>[
                         GestureDetector(
                           child: Image.asset(
-                            "images/icon_mine_massage.png",
+                            "assets/images/icon_mine_massage.png",
                             width: 20,
                             height: 20,
                             color: Colors.black,
@@ -177,6 +181,35 @@ class MinePageState extends State<MinePage> {
           ),
         )
       ],
+    );
+  }
+
+  Widget _account() {
+    return Container(
+      width: double.infinity,
+      child: Column(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.only(left: 10,top: 15),
+            child:  Text("账户",style: TextStyle(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w600)),
+          ),
+          // Flexible不强制铺满
+          Flexible(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                mainAxisSpacing: 20,
+                crossAxisSpacing: 10,
+                crossAxisCount: menuTitle.length
+              ),
+              itemBuilder: (context,index) {
+                return Column(
+                );
+              },
+            )
+          )
+        ],
+      ),
     );
   }
 
