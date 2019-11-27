@@ -6,6 +6,8 @@ import 'package:flutter_app/ui/guide_page.dart';
 import 'package:flutter_app/ui/login_page.dart';
 import 'package:flutter_app/ui/setting_page.dart';
 import 'package:flutter_app/ui/common_webview_page.dart';
+import 'package:flutter_app/ui/account_record_list_page.dart';
+import 'package:flutter_app/ui/video_details_page.dart';
 
 class Routers {
 
@@ -16,6 +18,9 @@ class Routers {
   static String login = "/login";
   static String setting = "/setting";
   static String webViewPage = "/webview";
+  static String accountRecordListPage = "/ui/recordList";
+  /// 视频详情
+  static const String video = "/video";
 
   //静态方法
   static void configureRoutes(Router router){//路由配置
@@ -35,6 +40,15 @@ class Routers {
       String weburl = params['url']?.first;
       return CommonWebview(title: webtitle, url: weburl);
     }));
+    router.define(accountRecordListPage, handler: Handler(handlerFunc: (_, params) => AccountRecordListPage()));
+    router.define(video, handler: new Handler(
+        handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+          String itemJson = params['itemJson']?.first;
+          return VideoDetailsPage(
+            itemJson: itemJson,
+          );
+        }));
+
     Routers.router = router;
   }
 

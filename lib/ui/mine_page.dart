@@ -1,5 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/res/colors.dart';
+import 'package:flutter_app/utils/styles.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_app/module/user_module.dart';
 import 'package:flutter_app/application.dart';
@@ -18,6 +20,7 @@ class MinePageState extends State<MinePage> {
   bool isLogin = false;
   var menuImage = ["zhls", "zjgl", "txzh"];
   var menuTitle = ["账户流水", "资金管理", "提现账号"];
+  int integral = 0;
 
   @override
   void initState() {
@@ -56,11 +59,84 @@ class MinePageState extends State<MinePage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      backgroundColor: Colours.material_bg,
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _topView(),
-          _account(),
+          Container(
+              height: 0.6,
+              width: double.infinity,
+              margin: const EdgeInsets.only(left: 16.0),
+              child: Divider()),
+          SizedBox(height: 12.0),
+          const Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: const Text(
+              "账户",
+              style: TextStyles.textBold18,
+            ),
+          ),
+          Flexible(
+              child: GridView.builder(
+            shrinkWrap: true,
+            padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 12.0),
+            gridDelegate:
+                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+            itemBuilder: (context, index) {
+              return InkWell(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image.asset(
+                        "assets/images/shop/" + menuImage[index] + ".png",
+                        width: 32.0,
+                        height: 32.0),
+                    const SizedBox(height: 4.0),
+                    Text(menuTitle[index], style: TextStyles.textSize12)
+                  ],
+                ),
+                onTap: () {
+                  if (index == 0) {
+                    Routers.router
+                        .navigateTo(context, Routers.accountRecordListPage);
+                  }
+                },
+              );
+            },
+            itemCount: menuTitle.length,
+          )),
+          Container(height: 0.6, width: double.infinity, child: Divider()),
+          jifen(),
+          Container(height: 0.6, width: double.infinity, child: Divider()),
           settingView(),
+          Container(height: 0.6, width: double.infinity, child: Divider()),
+        ],
+      ),
+    );
+  }
+
+
+  Widget jifen() {
+    return Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.all(15),
+      color: Colors.white,
+      child: Row(
+        children: <Widget>[
+          Image.asset("assets/images/setting/ic_fen.png",height: 24,width: 24),
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.only(left: 8),
+              child: Text("我的积分",style: TextStyle(color: Colors.black,fontSize: 16)),
+            ),
+            flex: 1,
+          ),
+          Text('$integral',style: TextStyles.textDarkGray14),
+          Container(
+            margin: EdgeInsets.only(left: 10),
+            child: Icon(Icons.arrow_forward_ios,size: 15, color: Colors.black26)
+          )
         ],
       ),
     );
@@ -68,34 +144,29 @@ class MinePageState extends State<MinePage> {
 
   Widget settingView() {
     return Container(
-      color: Colors.white,
-      padding: EdgeInsets.only(left: 15, right: 15),
-      margin: EdgeInsets.only(top: 20),
-      height: 50,
-      width: double.infinity,
-      child: Row(
-        children: <Widget>[
-          Container(
-            child: Icon(Icons.settings),
-          ),
-          Expanded(
-            child: GestureDetector(
-              child: Container(
-                margin: EdgeInsets.only(left: 10),
-                child: Text("设置",
-                    style: TextStyle(color: Colors.black, fontSize: 16)),
+        padding: EdgeInsets.all(15),
+        height: 50,
+        width: double.infinity,
+        child: Row(
+          children: <Widget>[
+            Image.asset("assets/images/setting/ic_set.png",width: 24,height: 24),
+            Expanded(
+              child: GestureDetector(
+                child: Container(
+                  margin: EdgeInsets.only(left: 8),
+                  child: Text("系统设置",
+                      style: TextStyle(color: Colors.black, fontSize: 16)),
+                ),
+                onTap: gotoSetting,
               ),
-              onTap: gotoSetting,
+              flex: 1,
             ),
-            flex: 1,
-          ),
-          Container(
-            child:
-                Icon(Icons.arrow_forward_ios, size: 15, color: Colors.black26),
-          )
-        ],
-      ),
-    );
+            Container(
+              child: Icon(Icons.arrow_forward_ios,
+                  size: 15, color: Colors.black26),
+            )
+          ],
+        ));
   }
 
   Widget _topView() {
@@ -104,11 +175,11 @@ class MinePageState extends State<MinePage> {
         new Container(
           height: 150,
           alignment: Alignment.bottomCenter,
-          decoration: BoxDecoration(
-            color: Colors.white,
-//          image: DecorationImage(
-//              image: AssetImage("images/borrow_top_bg.png"), fit: BoxFit.fill),
-          ),
+//          decoration: BoxDecoration(
+//            color: Colors.white,
+////          image: DecorationImage(
+////              image: AssetImage("images/borrow_top_bg.png"), fit: BoxFit.fill),
+//          ),
           child: Container(
             alignment: Alignment.topLeft,
             height: 60,
@@ -122,8 +193,12 @@ class MinePageState extends State<MinePage> {
                     alignment: Alignment.center,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(6.0),
-                      child: isLogin ? FadeInImage.assetNetwork(image: path,placeholder: defaultImage,)
-                          :Image.asset(defaultImage),
+                      child: isLogin
+                          ? FadeInImage.assetNetwork(
+                              image: path,
+                              placeholder: defaultImage,
+                            )
+                          : Image.asset(defaultImage),
                     ),
                   ),
                   flex: 1,
@@ -184,38 +259,8 @@ class MinePageState extends State<MinePage> {
     );
   }
 
-  Widget _account() {
-    return Container(
-      width: double.infinity,
-      child: Column(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.centerLeft,
-            margin: EdgeInsets.only(left: 10,top: 15),
-            child:  Text("账户",style: TextStyle(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w600)),
-          ),
-          // Flexible不强制铺满
-          Flexible(
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 10,
-                crossAxisCount: menuTitle.length
-              ),
-              itemBuilder: (context,index) {
-                return Column(
-                );
-              },
-            )
-          )
-        ],
-      ),
-    );
-  }
-
   void gotoSetting() {
-    Routers.router.navigateTo(context, Routers.setting,transition: TransitionType.inFromRight);
+    Routers.router.navigateTo(context, Routers.setting,
+        transition: TransitionType.inFromRight);
   }
-
 }
-

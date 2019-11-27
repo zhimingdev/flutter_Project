@@ -32,19 +32,22 @@ class DioManager {
     return _dio;
   }
 
-  static DioManager getInstance({String baseUrl}) {
+  static DioManager getInstance(String baseUrl,Map header) {
     if (baseUrl == null) {
       return _instance._normal();
     } else {
-      return _instance._baseUrl(baseUrl);
+      return _instance._baseUrl(baseUrl,header);
     }
   }
 
 
   //用于指定特定域名，比如cdn和kline首次的http请求
-  DioManager _baseUrl(String baseUrl) {
+  DioManager _baseUrl(String baseUrl,Map header) {
     if (_dio != null) {
       _dio.options.baseUrl = baseUrl;
+    }
+    if(_dio != null && header != null) {
+      _dio.options.headers = httpHeaders;
     }
     return this;
   }
@@ -59,4 +62,28 @@ class DioManager {
     return this;
   }
 
+  static Future getHomePageList(url) async {
+    Dio dio = new Dio();
+    var response = await dio.get(
+      url,
+      options: Options(
+        connectTimeout: 5000,
+        receiveTimeout: 5000,
+        headers: httpHeaders,
+      ),
+    );
+    return response;
+  }
+
+
 }
+
+const httpHeaders = {
+  'Accept': 'application/json, text/plain, */*',
+  'Accept-Encoding': 'gzip, deflate, br',
+  'Accept-Language': 'zh-CN,zh;q=0.9',
+  'Connection': 'keep-alive',
+  'Content-Type': 'application/json',
+  'User-Agent':
+  'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1',
+};

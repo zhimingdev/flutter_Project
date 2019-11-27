@@ -66,7 +66,7 @@ class _SplashWidgetState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        new Image.asset("images/splash.png",
+        new Image.asset("assets/images/splash.png",
             fit: BoxFit.fill, width: double.infinity, height: double.infinity),
         //安全区===>状态栏以下
         new SafeArea(

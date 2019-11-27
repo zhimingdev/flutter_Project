@@ -14,7 +14,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget{
     this.title: "",
     this.centerTitle: "",
     this.actionName: "",
-    this.backImg: "images/ic_back_black.png",
+    this.backImg: "assets/images/ic_back_black.png",
     this.onPressed,
     this.isBack: true
   }): super(key: key);
@@ -55,6 +55,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget{
                     width: double.infinity,
                     child: Text(
                         title.isEmpty ? centerTitle : title,
+                        softWrap: false,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: Dimens.font_sp18,
                           color: _overlayStyle == SystemUiOverlayStyle.light ?  Colours.dark_text : Colours.text,
