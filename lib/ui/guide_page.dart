@@ -15,9 +15,9 @@ class _GuidePageState extends State<GuidePage> {
 
   @override
   void initState() {
-    list.add("images/c.png");
-    list.add("images/b.png");
-    list.add("images/a.png");
+    list.add("assets/images/c.png");
+    list.add("assets/images/b.png");
+    list.add("assets/images/a.png");
   }
 
   //存储bool值

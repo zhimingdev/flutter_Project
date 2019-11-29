@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/SplashPage.dart';
@@ -8,6 +10,8 @@ import 'package:flutter_app/ui/setting_page.dart';
 import 'package:flutter_app/ui/common_webview_page.dart';
 import 'package:flutter_app/ui/account_record_list_page.dart';
 import 'package:flutter_app/ui/video_details_page.dart';
+import 'package:flutter_app/ui/mine_integral_rank_page.dart';
+import 'package:flutter_app/module/mine_integral_entity.dart';
 
 class Routers {
 
@@ -19,6 +23,7 @@ class Routers {
   static String setting = "/setting";
   static String webViewPage = "/webview";
   static String accountRecordListPage = "/ui/recordList";
+  static String integralrank = "/ui/integralrank";
   /// 视频详情
   static const String video = "/video";
 
@@ -49,6 +54,12 @@ class Routers {
           );
         }));
 
+    ///积分排行
+    router.define(integralrank, handler: Handler(handlerFunc: (_,params){
+      print('====${params['data'].first}');
+      MineIntegralData data = MineIntegralData.fromJson(json.decode(params['data'].first));
+      return MineIntegralRank(data);
+    }));
     Routers.router = router;
   }
 

@@ -9,6 +9,8 @@ import 'package:flutter_app/module/home_banner_entity.dart';
 import 'package:flutter_app/module/home_data_entity.dart';
 import 'package:flutter_app/module/welfare_entity.dart';
 import 'package:flutter_app/module/video_entity.dart';
+import 'package:flutter_app/module/mine_integral_entity.dart';
+import 'package:flutter_app/module/mine_integral_rank_entity.dart';
 
 class ApiService {
 
@@ -38,9 +40,13 @@ class ApiService {
     });
   }
 
-  ///获取积分信息
-  void userRank() async{
-
+  ///获取积分排行榜
+  void userRank(int page,Function callback) async{
+    DioManager.getInstance(null, null).dio
+        .get(Api.INTEGRAL_RANK+page.toString()+'/json')
+        .then((response) {
+          callback(MineIntegralRankEntity.fromJson(json.decode(response.toString())));
+    });
   }
 
   ///首页banner
@@ -61,6 +67,15 @@ class ApiService {
     });
   }
 
+  ///个人积分
+  void mineIntegral(Function callback) async {
+    DioManager.getInstance(null, null).dio
+        .get(Api.MINE_JIFEN,options: _getOptions())
+        .then((response) {
+      callback(MineIntegralEntity.fromJson(json.decode(response.toString())));
+    });
+  }
+
   ///福利养眼
   void welfare(int page,Function callback) async {
     DioManager.getInstance(Api.GANHUO_BASEURL,null).dio
@@ -76,6 +91,15 @@ class ApiService {
         .get(Api.VIDEO+type)
         .then((response) {
       callback(VideoEntity.fromJson(json.decode(response.toString())));
+    });
+  }
+
+  ///福利-相关视频
+  void aboutVideo(int id ,Function callback) async {
+    DioManager.getInstance(Api.KAIYAN_BASEURL, httpHeaders).dio
+        .get(Api.ABOUT_VERSION+id.toString())
+        .then((response) {
+          callback(Issue.fromJson(json.decode(response.toString())));
     });
   }
 

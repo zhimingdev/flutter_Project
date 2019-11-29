@@ -62,16 +62,26 @@ class DioManager {
     return this;
   }
 
-  static Future getHomePageList(url) async {
-    Dio dio = new Dio();
-    var response = await dio.get(
-      url,
-      options: Options(
-        connectTimeout: 5000,
-        receiveTimeout: 5000,
-        headers: httpHeaders,
-      ),
+  static Future getHomePageList(url,Map map) async {
+    var response;
+    var options = Options(
+      connectTimeout: 5000,
+      receiveTimeout: 5000,
+      headers: httpHeaders,
     );
+    Dio dio = new Dio();
+    if(map == null) {
+      response = await dio.get(
+        url,
+        options: options,
+      );
+    }else {
+      response = await dio.get(
+        url,
+        queryParameters: map,
+        options: options,
+      );
+    }
     return response;
   }
 

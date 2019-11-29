@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/res/colors.dart';
@@ -41,22 +43,40 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        title: Text("设置",style: TextStyle(color: Colors.black,fontSize: 18)),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        leading: IconButton(icon: Icon(Icons.arrow_back_ios,size: 20,color: Colors.black),
-            onPressed: (){
-              Navigator.of(context).pop();
-            })
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 45.0,
+              width: double.infinity,
+              color: Colors.white,
+              margin: EdgeInsets.only(top: MediaQueryData.fromWindow(window).padding.top),
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.center,
+                    child: Text("设置",style: TextStyle(color: Colors.black,fontSize: 16,decoration: TextDecoration.none)),
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.only(left: 15),
+                    padding: EdgeInsets.all(5),
+                    child: GestureDetector(
+                      child: Image.asset("assets/images/ic_back_black.png",width: 20,height: 20),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ),
+            version(),
+            Container(height: 0.8,width: double.infinity,child: Divider()),
+            contentView(),
+          ],
+        ),
       ),
-      body: Column(
-        children: <Widget>[
-          version(),
-          Container(height: 0.8,width: double.infinity,child: Divider()),
-          contentView(),
-        ],
-      )
     );
   }
 
@@ -72,7 +92,7 @@ class _SettingPageState extends State<SettingPage> {
           Expanded(
             child: Container(
               margin: EdgeInsets.only(left: 8),
-              child: Text("版本号",style: TextStyle(color: Colors.black,fontSize: 16)),
+              child: Text("版本号",style: TextStyle(color: Colors.black,fontSize: 16,decoration: TextDecoration.none)),
             ),
             flex: 1,
           ),
@@ -90,7 +110,7 @@ class _SettingPageState extends State<SettingPage> {
           height: 45,
           width: double.infinity,
           color: Colors.white,
-          child: Text("退出登录",style: TextStyle(color: Colors.black,fontSize: 14))
+          child: Text("退出登录",style: TextStyle(color: Colors.black,fontSize: 14,decoration: TextDecoration.none))
       ),
       onTap: () {
         showDialog(

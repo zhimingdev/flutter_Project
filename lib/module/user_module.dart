@@ -16,6 +16,7 @@ class User {
   List<String> cookie;
   String userName;
   String headImage;
+  String userId;
 
   Future<Null> getUserInfo() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
@@ -33,6 +34,11 @@ class User {
     if(image!=null){
       headImage = image;
     }
+
+    String id = sp.getString("userId");
+    if(id!=null){
+      userId = id;
+    }
   }
 
   void saveUserInfo(UserModuleEntity _userModel,Response response){
@@ -40,6 +46,7 @@ class User {
     cookie = cookies;
     userName = _userModel.data.username;
     headImage = _userModel.data.headImage;
+    userId = _userModel.data.id.toString();
     saveInfo();
   }
 
@@ -48,12 +55,14 @@ class User {
     sp.setStringList("cookies", cookie);
     sp.setString("username", userName);
     sp.setString("headimage", headImage);
+    sp.setString("userId", userId);
   }
 
   void clearUserInfor(){
     cookie = null;
     userName = null;
     headImage = null;
+    userId = null;
     clearInfo();
   }
 
@@ -62,6 +71,7 @@ class User {
     sp.setStringList("cookies", null);
     sp.setString("username", null);
     sp.setString("headimage", null);
+    sp.setString("userId", null);
   }
 
 }

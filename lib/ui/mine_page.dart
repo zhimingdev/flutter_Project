@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/res/colors.dart';
@@ -7,6 +9,8 @@ import 'package:flutter_app/module/user_module.dart';
 import 'package:flutter_app/application.dart';
 import 'package:flutter_app/event/login_event.dart';
 import 'package:flutter_app/router/Routers.dart';
+import 'package:flutter_app/http/api_service.dart';
+import 'package:flutter_app/module/mine_integral_entity.dart';
 
 class MinePage extends StatefulWidget {
   @override
@@ -21,6 +25,8 @@ class MinePageState extends State<MinePage> {
   var menuImage = ["zhls", "zjgl", "txzh"];
   var menuTitle = ["账户流水", "资金管理", "提现账号"];
   int integral = 0;
+  String userId ='';
+  MineIntegralData data;
 
   @override
   void initState() {
@@ -28,6 +34,20 @@ class MinePageState extends State<MinePage> {
     super.initState();
     this.registerLoginEvent();
     getUserInfo();
+    getUserIntergnal();
+  }
+
+  void getUserIntergnal() {
+    ApiService().mineIntegral((MineIntegralEntity mineIntegralEntity){
+      if(mineIntegralEntity != null && mineIntegralEntity.errorCode == 0) {
+        setState(() {
+          data = mineIntegralEntity.data;
+          integral = mineIntegralEntity.data.coinCount;
+        });
+      }else {
+        Fluttertoast.showToast(msg: mineIntegralEntity.errorMsg);
+      }
+    });
   }
 
   void getUserInfo() {
@@ -44,6 +64,7 @@ class MinePageState extends State<MinePage> {
     Application.eventBus.on<LoginEvent>().listen((event) {
       getUserInfo();
       changeUI();
+      getUserIntergnal();
     });
   }
 
@@ -52,6 +73,7 @@ class MinePageState extends State<MinePage> {
     setState(() {
       username = User.singleton.userName;
       path = User.singleton.headImage;
+      userId = User.singleton.userId;
     });
   }
 
@@ -118,27 +140,32 @@ class MinePageState extends State<MinePage> {
 
 
   Widget jifen() {
-    return Container(
-      alignment: Alignment.center,
-      padding: EdgeInsets.all(15),
-      color: Colors.white,
-      child: Row(
-        children: <Widget>[
-          Image.asset("assets/images/setting/ic_fen.png",height: 24,width: 24),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.only(left: 8),
-              child: Text("我的积分",style: TextStyle(color: Colors.black,fontSize: 16)),
+    return GestureDetector(
+      child: Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(15),
+        color: Colors.white,
+        child: Row(
+          children: <Widget>[
+            Image.asset("assets/images/setting/ic_fen.png",height: 24,width: 24),
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.only(left: 8),
+                child: Text("我的积分",style: TextStyle(color: Colors.black,fontSize: 16)),
+              ),
+              flex: 1,
             ),
-            flex: 1,
-          ),
-          Text('$integral',style: TextStyles.textDarkGray14),
-          Container(
-            margin: EdgeInsets.only(left: 10),
-            child: Icon(Icons.arrow_forward_ios,size: 15, color: Colors.black26)
-          )
-        ],
+            Text('$integral',style: TextStyles.textDarkGray14),
+            Container(
+                margin: EdgeInsets.only(left: 10),
+                child: Icon(Icons.arrow_forward_ios,size: 15, color: Colors.black26)
+            )
+          ],
+        ),
       ),
+      onTap: () {
+        Routers.router.navigateTo(context, '${Routers.integralrank}?data=${Uri.encodeComponent(json.encode(data))}');
+      },
     );
   }
 

@@ -11,6 +11,12 @@ class Api {
   ///首页文章
   static const String HOME_DATA = "/article/list/";
 
+  ///个人积分
+  static const String MINE_JIFEN = "/lg/coin/userinfo/json";
+
+  ///积分排行
+  static const String INTEGRAL_RANK ="/coin/rank/";
+
   ///干货开放API
   static const String GANHUO_BASEURL ="http://gank.io";
 
@@ -22,5 +28,8 @@ class Api {
 
   ///休息视频
   static const String VIDEO = "/api/v2/feed?";
+
+  ///相关视频
+  static const String ABOUT_VERSION = "/api/v4/video/related?id=";
 
 }
