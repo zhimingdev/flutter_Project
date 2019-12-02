@@ -12,6 +12,7 @@ import 'package:flutter_app/ui/account_record_list_page.dart';
 import 'package:flutter_app/ui/video_details_page.dart';
 import 'package:flutter_app/ui/mine_integral_rank_page.dart';
 import 'package:flutter_app/module/mine_integral_entity.dart';
+import 'package:flutter_app/ui/photo_page.dart';
 
 class Routers {
 
@@ -26,6 +27,7 @@ class Routers {
   static String integralrank = "/ui/integralrank";
   /// 视频详情
   static const String video = "/video";
+  static const String photo = "ui/photo";
 
   //静态方法
   static void configureRoutes(Router router){//路由配置
@@ -56,9 +58,12 @@ class Routers {
 
     ///积分排行
     router.define(integralrank, handler: Handler(handlerFunc: (_,params){
-      print('====${params['data'].first}');
       MineIntegralData data = MineIntegralData.fromJson(json.decode(params['data'].first));
       return MineIntegralRank(data);
+    }));
+    router.define(photo, handler: Handler(handlerFunc: (_,params) {
+      String imageurl = params['url'].first;
+      return PhototImagePage(imageurl);
     }));
     Routers.router = router;
   }

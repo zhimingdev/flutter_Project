@@ -518,6 +518,8 @@ class VideoDetailsPageState extends State<VideoDetailsPage>
   }
 
   void refreshvideo(String url) {
+    chewieController.dispose();
+    videoPlayerController.dispose();
     videoPlayerController = VideoPlayerController.network(url);
     chewieController = ChewieController(
         videoPlayerController: videoPlayerController,

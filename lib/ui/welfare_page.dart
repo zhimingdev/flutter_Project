@@ -197,10 +197,15 @@ class WelfarePageState extends State<WelfarePage>
                                   color: Colors.grey[100],
                                 );
                               } else {
-                                return Container(
-                                  height: 120.0,
-                                  child: Image.network(images[position].url,
-                                      fit: BoxFit.fill),
+                                return GestureDetector(
+                                  child: Container(
+                                    height: 120.0,
+                                    child: Image.network(images[position].url,
+                                        fit: BoxFit.fill),
+                                  ),
+                                  onTap: () {
+                                    Routers.router.navigateTo(context, '${Routers.photo}?url=${Uri.encodeComponent(images[position].url)}');
+                                  },
                                 );
                               }
                             },
