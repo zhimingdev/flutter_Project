@@ -30,6 +30,9 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
     }
 
     lintOptions {
@@ -69,8 +72,12 @@ flutter {
 }
 
 dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    implementation files('libs/AMap3DMap_7.1.0_AMapSearch_7.1.0_AMapLocation_4.7.2_20191030.jar')
 }

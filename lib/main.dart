@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'router/Routers.dart';
 import 'package:fluro/fluro.dart';
@@ -13,7 +12,6 @@ void main() {
   ///初始化并配置路由
   final router = new Router();
   Routers.configureRoutes(router);
-
   runApp(MyApp());
   //黑色
 //  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);

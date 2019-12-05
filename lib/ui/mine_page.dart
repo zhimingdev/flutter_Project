@@ -34,7 +34,9 @@ class MinePageState extends State<MinePage> {
     super.initState();
     this.registerLoginEvent();
     getUserInfo();
-    getUserIntergnal();
+    if(isLogin) {
+      getUserIntergnal();
+    }
   }
 
   void getUserIntergnal() {

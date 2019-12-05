@@ -17,17 +17,17 @@ import 'package:flutter_app/ui/photo_page.dart';
 class Routers {
 
   static Router router;
-  static String splash = "/splash";
-  static String home = "/home";
-  static String guide = "/guide";
-  static String login = "/login";
-  static String setting = "/setting";
-  static String webViewPage = "/webview";
-  static String accountRecordListPage = "/ui/recordList";
-  static String integralrank = "/ui/integralrank";
+  static const String splash = "/splash";
+  static const String home = "/home";
+  static const String guide = "/guide";
+  static const String login = "/login";
+  static const String setting = "/setting";
+  static const String webViewPage = "/webview";
+  static const String accountRecordListPage = "/ui/recordList";
+  static const String integralrank = "/ui/integralrank";
   /// 视频详情
   static const String video = "/video";
-  static const String photo = "ui/photo";
+  static const String photo = "/ui/photo";
 
   //静态方法
   static void configureRoutes(Router router){//路由配置
@@ -61,8 +61,8 @@ class Routers {
       MineIntegralData data = MineIntegralData.fromJson(json.decode(params['data'].first));
       return MineIntegralRank(data);
     }));
-    router.define(photo, handler: Handler(handlerFunc: (_,params) {
-      String imageurl = params['url'].first;
+    router.define(photo, handler: Handler(handlerFunc: (context,params) {
+      String imageurl = params['url']?.first;
       return PhototImagePage(imageurl);
     }));
     Routers.router = router;

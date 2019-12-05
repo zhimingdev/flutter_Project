@@ -188,7 +188,8 @@ class WelfarePageState extends State<WelfarePage>
                             SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 10.0,
-                                crossAxisSpacing: 10.0),
+                                crossAxisSpacing: 10.0
+                            ),
                             itemBuilder: (_, position) {
                               if (images == null ||
                                   images[position] == null) {
@@ -204,13 +205,15 @@ class WelfarePageState extends State<WelfarePage>
                                         fit: BoxFit.fill),
                                   ),
                                   onTap: () {
-                                    Routers.router.navigateTo(context, '${Routers.photo}?url=${Uri.encodeComponent(images[position].url)}');
+                                    String imageUrl = images[position].url;
+                                    Routers.router.navigateTo(context, Routers.photo+'?url=${Uri.encodeComponent(imageUrl)}');
                                   },
                                 );
                               }
                             },
                             itemCount: images.length,
-                            controller: controller),
+                            controller: controller
+                        ),
                         onRefresh: getImageData,
                       )
                           : RefreshIndicator(
