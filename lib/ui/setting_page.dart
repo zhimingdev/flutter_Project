@@ -47,10 +47,9 @@ class _SettingPageState extends State<SettingPage> {
         child: Column(
           children: <Widget>[
             Container(
-              height: 45.0,
+              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top+10,bottom: 10),
               width: double.infinity,
               color: Colors.white,
-              margin: EdgeInsets.only(top: MediaQueryData.fromWindow(window).padding.top),
               child: Stack(
                 children: <Widget>[
                   Container(
@@ -60,7 +59,6 @@ class _SettingPageState extends State<SettingPage> {
                   Container(
                     alignment: Alignment.centerLeft,
                     margin: EdgeInsets.only(left: 15),
-                    padding: EdgeInsets.all(5),
                     child: GestureDetector(
                       child: Image.asset("assets/images/ic_back_black.png",width: 20,height: 20),
                       onTap: () {

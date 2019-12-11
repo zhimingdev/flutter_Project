@@ -12,6 +12,8 @@ import 'package:flutter_app/application.dart';
 import 'package:flutter_app/event/login_event.dart';
 import 'package:flutter_app/utils/customdialog_page.dart';
 import 'package:flutter_app/res/colors.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
   //  final String message;
@@ -51,7 +53,24 @@ class _Home extends State<HomePage> {
     super.initState();
     getLoginInfo();
     this.registerLoginEvent();
+    //权限申请
+    requestPermission();
   }
+
+  Future requestPermission() async {
+    // 申请权限
+    Map<PermissionGroup, PermissionStatus> permissions =
+    await PermissionHandler().requestPermissions([PermissionGroup.location]);
+    // 申请结果
+    PermissionStatus permission =
+    await PermissionHandler().checkPermissionStatus(PermissionGroup.location);
+    if (permission == PermissionStatus.granted) {
+      Fluttertoast.showToast(msg: "权限申请通过");
+    } else {
+      Fluttertoast.showToast(msg: "权限申请被拒绝");
+    }
+  }
+
 
   Future<Null> getLoginInfo() async {
     User.singleton.getUserInfo();

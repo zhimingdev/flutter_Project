@@ -76,17 +76,17 @@ class _MineIntegralRankPage extends State<MineIntegralRank> {
 
   @override
   Widget build(BuildContext context) {
+    double padd = MediaQuery.of(context).padding.top;
     // TODO: implement build
     return Scaffold(
       body: Container(
         child: Column(
         children: <Widget>[
           Container(
-              height: 45.0,
+              padding: EdgeInsets.only(top: padd),
+              height: 45+padd,
               width: double.infinity,
               color: Colors.white,
-              margin: EdgeInsets.only(
-                  top: MediaQueryData.fromWindow(window).padding.top),
               child: Stack(
                 children: <Widget>[
                   Container(

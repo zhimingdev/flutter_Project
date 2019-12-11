@@ -13,6 +13,8 @@ import 'package:flutter_app/ui/video_details_page.dart';
 import 'package:flutter_app/ui/mine_integral_rank_page.dart';
 import 'package:flutter_app/module/mine_integral_entity.dart';
 import 'package:flutter_app/ui/photo_page.dart';
+import 'package:flutter_app/ui/map_page.dart';
+import 'package:flutter_app/ui/city_page.dart';
 
 class Routers {
 
@@ -28,6 +30,8 @@ class Routers {
   /// 视频详情
   static const String video = "/video";
   static const String photo = "/ui/photo";
+  static const String map = "/ui/map";
+  static const String city = "/ui/city";
 
   //静态方法
   static void configureRoutes(Router router){//路由配置
@@ -65,6 +69,11 @@ class Routers {
       String imageurl = params['url']?.first;
       return PhototImagePage(imageurl);
     }));
+    router.define(city, handler: Handler(handlerFunc: (_,params) {
+      String city = params['city']?.first;
+      return CityPage(city);
+    }));
+    router.define(map, handler: Handler(handlerFunc: (_,params) => MapPage()));
     Routers.router = router;
   }
 

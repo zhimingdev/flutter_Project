@@ -33,10 +33,17 @@ class VideoDetailsPageState extends State<VideoDetailsPage>
   ChewieController chewieController;
   bool isPlay = true;
   List list = List();
+  String defaultCollextText ='+ 关注';
+  Color color1 = Colors.black;
+  bool isGuanzhu = false;
+  bool isLove = false;
+  int count = 0;
+  String imagepath = 'assets/images/video/icon_like.png';
 
   @override
   void initState() {
     item = Item.fromJson(FluroConvertUtils.string2map(widget.itemJson));
+    count = item.data.consumption.collectionCount;
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 //    getVideoUrl();
@@ -225,10 +232,10 @@ class VideoDetailsPageState extends State<VideoDetailsPage>
                       child: Container(
                         padding: EdgeInsets.all(5),
                         child: Text(
-                          '+ 关注',
+                          defaultCollextText,
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.black,
+                            color: color1,
                           ),
                         ),
                         decoration: BoxDecoration(
@@ -236,9 +243,19 @@ class VideoDetailsPageState extends State<VideoDetailsPage>
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
-                      onTap: (() {
-                        print('点击关注');
-                      }),
+                      onTap: () {
+                        setState(() {
+                          if(!isGuanzhu) {
+                            defaultCollextText = '已关注';
+                            color1 = Colors.grey[700];
+                            isGuanzhu = true;
+                          }else{
+                            defaultCollextText = '+ 关注';
+                            color1 = Colors.black;
+                            isGuanzhu = false;
+                          }
+                        });
+                      },
                     ),
                   ],
                 ),
@@ -300,24 +317,39 @@ class VideoDetailsPageState extends State<VideoDetailsPage>
                             padding: EdgeInsets.only(left: 15, right: 15),
                             child: Row(
                               children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Image.asset(
-                                      'assets/images/video/icon_like.png',
-                                      width: 22,
-                                      height: 22,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 3),
-                                      child: Text(
-                                        '${item.data.consumption.collectionCount}',
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.white,
+                                GestureDetector(
+                                  child: Row(
+                                    children: <Widget>[
+                                      Image.asset(
+                                        imagepath,
+                                        width: 22,
+                                        height: 22,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 3),
+                                        child: Text(
+                                          '$count',
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      if(!isLove) {
+                                        imagepath = 'assets/images/video/ic_love.png';
+                                        count += 1;
+                                        isLove = true;
+                                      }else{
+                                        imagepath = 'assets/images/video/icon_like.png';
+                                        count -= 1;
+                                        isLove = false;
+                                      }
+                                    });
+                                  },
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(left: 30, right: 30),
