@@ -4,6 +4,7 @@ import 'package:azlistview/azlistview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/module/city_model.dart';
+import 'package:flutter_app/router/Routers.dart';
 import 'package:flutter_app/widgets/app_bar.dart';
 import 'package:lpinyin/lpinyin.dart';
 
@@ -128,11 +129,33 @@ class _CityPageState extends State<CityPage> {
       body: Container(
         child: Column(
           children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 15.0),
-              height: 50.0,
-              child: Text("当前城市: ${widget.city}"),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.only(left: 15.0),
+                    height: 50.0,
+                    child: Text("当前城市: ${widget.city}"),
+                  ),
+                  flex: 1,
+                ),
+                Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.add_location,color: Colors.blue,size: 20),
+                        Text('重新定位',style: TextStyle(color: Colors.blue,fontSize: 14))
+                      ],
+                    ),
+                    onTap: () {
+                      Routers.router.navigateTo(context, Routers.map);
+                    },
+                  ),
+                )
+              ],
             ),
             Expanded(
               flex: 1,

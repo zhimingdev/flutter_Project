@@ -79,5 +79,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-    implementation files('libs/AMap3DMap_7.1.0_AMapSearch_7.1.0_AMapLocation_4.7.2_20191030.jar')
+    implementation 'com.github.AndroidMsky:RandomTextView:v1.4'
+    implementation files('libs/AMap3DMap_7.1.0_AMapSearch_7.1.0_20191030.jar')
 }

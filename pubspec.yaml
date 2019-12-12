@@ -52,6 +52,12 @@ dependencies:
   permission_handler: ^3.2.2
   azlistview: ^0.1.2
   lpinyin: ^1.0.7
+  flutter_floating_menu: ^0.0.2
+  # 分享
+  flutter_wechat: ^0.1.5
+  path_provider: ^1.5.0
+  amap_location_plugin:
+    path: 'amap_location_plugin/'
 
 dev_dependencies:
   flutter_test:

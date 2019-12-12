@@ -1,8 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:amap_location_plugin/amap_location_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/module/city_model.dart';
 import 'package:flutter_app/router/Routers.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 class DataPage extends StatefulWidget {
@@ -13,30 +17,33 @@ class DataPage extends StatefulWidget {
 class DataPageState extends State<DataPage> {
   String dizhi = '定位中...';
   String city = '';
-  static const MethodChannel _platform =
-      const MethodChannel('com.example.flutter_app.MapRegistrant');
-  static const EventChannel eventchannel =
-      const EventChannel('flutter_event_channel');
 
-  void _onData(jsonObject) {
-    setState(() {
-      Map<String,dynamic> map = json.decode(jsonObject);
-      dizhi = map['address'];
-      city = map['city'];
-    });
+  AmapLocationPlugin _amapLocation = AmapLocationPlugin();
+  StreamSubscription<String> _locationSubscription;
+
+
+  void onData(jsonObject) {
+    Map<String,dynamic> map = json.decode(jsonObject);
+    dizhi = map['address'];
+    city = map['city'];
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    eventchannel.receiveBroadcastStream().listen(_onData);
-    getInfo();
+    startLocation();
+    _locationSubscription = _amapLocation.onLocationChanged.listen((String location) {
+      print('=================$location');
+      setState(() {
+        city = json.decode(location)['city'];
+        dizhi = json.decode(location)['info'];
+      });
+    });
   }
 
-  //在Flutter端的MethodChannel设置MethodHandler，去处理Native申请要调用的method的值。
-  Future<Null> getInfo() async {
-    var add = await _platform.invokeMethod('getAddress');
+  Future<void> startLocation() async {
+    await _amapLocation.startLocation;
   }
 
   @override
@@ -68,7 +75,12 @@ class DataPageState extends State<DataPage> {
                             ],
                           ),
                           onTap: () {
-                            Routers.router.navigateTo(context, Routers.city+'?city=${Uri.encodeComponent(city)}');
+                            Routers.router.navigateTo(context, Routers.city+'?city=${Uri.encodeComponent(city)}').then((value) {
+                              CityInfo cityinfo = value ;
+                              if(cityinfo != null) {
+                                Fluttertoast.showToast(msg: cityinfo.name);
+                              }
+                            });
                           },
                         ),
                         Expanded(
@@ -106,8 +118,10 @@ class DataPageState extends State<DataPage> {
                       ],
                     ),
                   ),
+
             ],
           )),
     );
   }
+
 }

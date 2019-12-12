@@ -59,7 +59,9 @@ class _CustomDialogState extends State<CustomDialog> {
             style: TextStyle(fontSize: 16.0)
         ),
         Expanded(
-            child: Center(
+            child: Container(
+              alignment: Alignment.topCenter,
+              padding: const EdgeInsets.only(left: 10,right: 10,top: 15),
               child: Text(
                   widget.content == null ? '' : widget.content,
                   style: TextStyle(fontSize: 14.0)

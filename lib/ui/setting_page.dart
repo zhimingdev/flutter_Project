@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/res/colors.dart';
 import 'package:flutter_app/utils/customdialog_page.dart';
 import 'package:flutter_app/module/user_module.dart';
@@ -10,6 +12,7 @@ import 'package:flutter_app/application.dart';
 import 'package:flutter_app/event/login_event.dart';
 import 'package:flutter_app/utils/styles.dart';
 import 'package:package_info/package_info.dart';
+import 'package:path_provider/path_provider.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -19,12 +22,21 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   String appversion ="";
+  String _cacheSizeStr ='0';
+  static const MethodChannel _platform =
+  const MethodChannel('com.example.flutter_app.NumberViewRegistrant');
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getVersion();
+    loadCache();
+    getCache();
+  }
+
+  void getCache() async{
+    var result = await _platform.invokeMethod('number',_cacheSizeStr);
   }
 
   void getVersion() {
@@ -71,6 +83,29 @@ class _SettingPageState extends State<SettingPage> {
             ),
             version(),
             Container(height: 0.8,width: double.infinity,child: Divider()),
+            Container(
+              height: 50,
+              color: Colors.white,
+              width: double.infinity,
+              padding: EdgeInsets.all(15),
+              child:
+               Row(
+                 children: <Widget>[
+                   Image.asset("assets/images/setting/ic_cache.png",height: 24,width: 24),
+                   Container(
+                     margin: EdgeInsets.only(left: 8),
+                     child: Text('缓存大小',style: TextStyle(color: Colors.black,fontSize: 16,decoration: TextDecoration.none)),
+                   ),
+                   Expanded(
+                     child: Container(
+                       alignment: Alignment.centerRight,
+                       child: AndroidView(viewType: 'numberview'),
+                     ),
+                     flex: 1,
+                   ),
+                 ],
+               )
+            ),
             contentView(),
           ],
         ),
@@ -129,6 +164,50 @@ class _SettingPageState extends State<SettingPage> {
         );
       },
     );
+  }
+
+  ///加载缓存
+  Future<Null> loadCache() async {
+    Directory tempDir = await getTemporaryDirectory();
+    double value = await _getTotalSizeOfFilesInDir(tempDir);
+    print('临时目录大小: ' + value.toString());
+    setState(() {
+      _cacheSizeStr = _renderSize(value);  // _cacheSizeStr用来存储大小的值
+    });
+  }
+
+  Future<double> _getTotalSizeOfFilesInDir(final FileSystemEntity file) async {
+    if (file is File) {
+      int length = await file.length();
+      return double.parse(length.toString());
+    }
+    if (file is Directory) {
+      final List<FileSystemEntity> children = file.listSync();
+      double total = 0;
+      if (children != null)
+        for (final FileSystemEntity child in children)
+          total += await _getTotalSizeOfFilesInDir(child);
+      return total;
+    }
+    return 0;
+  }
+
+  _renderSize(double value) {
+    if (null == value) {
+      return 0;
+    }
+    List<String> unitArr = List()
+      ..add('B')
+      ..add('K')
+      ..add('M')
+      ..add('G');
+    int index = 0;
+    while (value > 1024) {
+      index++;
+      value = value / 1024;
+    }
+    String size = value.toStringAsFixed(2);
+    return size + unitArr[index];
   }
 
 }

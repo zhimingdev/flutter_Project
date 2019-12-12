@@ -35,7 +35,10 @@ class _Home extends State<HomePage> {
     Icons.cake,
     Icons.account_circle
   ];
-  var page = <Widget>[HallPage(), DataPage(), WelfarePage(), MinePage()];
+  var page ;
+
+  static const MethodChannel premisChannel =
+  const MethodChannel('com.example.flutter_app.PresmissRegistrant');
 
   /*
    * 根据选择获得对应的normal或是press的icon
@@ -55,6 +58,11 @@ class _Home extends State<HomePage> {
     this.registerLoginEvent();
     //权限申请
     requestPermission();
+    page = <Widget>[HallPage(), DataPage(), WelfarePage(), MinePage()];
+  }
+
+  Future<Null> getSetting() async {
+    var premiss = await premisChannel.invokeMethod('goSetting');
   }
 
   Future requestPermission() async {
@@ -64,10 +72,18 @@ class _Home extends State<HomePage> {
     // 申请结果
     PermissionStatus permission =
     await PermissionHandler().checkPermissionStatus(PermissionGroup.location);
-    if (permission == PermissionStatus.granted) {
-      Fluttertoast.showToast(msg: "权限申请通过");
-    } else {
-      Fluttertoast.showToast(msg: "权限申请被拒绝");
+    if (permission != PermissionStatus.granted) {
+      showDialog(
+        context: context,
+        builder: (context) => CustomDialog(
+          title: '温馨提示',
+          content: '相关权限未打开,将导致部分功能无法使用,请前往设置',
+          cancelContent: "取消",
+          confirmContent: '去设置',
+          confirmTextColor: Colors.blue,
+          confirmCallback: getSetting,
+        )
+      );
     }
   }
 
