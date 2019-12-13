@@ -12,7 +12,17 @@ A new Flutter application.
  * **7.ShareSDK分享**
 
 # app图片
-![image](https://github.com/zhimingdev/flutter_Project/blob/master/images/Screenshot_20191213-160639.png)
+![image](https://github.com/zhimingdev/flutter_Project/blob/master/pigf/Screenshot_20191213-160631.png
+![image](https://github.com/zhimingdev/flutter_Project/blob/master/pigf/Screenshot_20191213-160639.png
+![image](https://github.com/zhimingdev/flutter_Project/blob/master/pigf/Screenshot_20191213-160645.png
+![image](https://github.com/zhimingdev/flutter_Project/blob/master/pigf/Screenshot_20191213-160655.png
+![image](https://github.com/zhimingdev/flutter_Project/blob/master/pigf/Screenshot_20191213-160707.png
+![image](https://github.com/zhimingdev/flutter_Project/blob/master/pigf/Screenshot_20191213-160717.png
+![image](https://github.com/zhimingdev/flutter_Project/blob/master/pigf/Screenshot_20191213-160730.png
+![image](https://github.com/zhimingdev/flutter_Project/blob/master/pigf/Screenshot_20191213-160739.png
+![image](https://github.com/zhimingdev/flutter_Project/blob/master/pigf/Screenshot_20191213-160801.png
+![image](https://github.com/zhimingdev/flutter_Project/blob/master/pigf/Screenshot_20191213-160807.png
+![image](https://github.com/zhimingdev/flutter_Project/blob/master/pigf/Screenshot_20191213-160819.png
 
 # 感谢
  * **鸿洋大神的 玩Android 开放API**
