@@ -10,7 +10,10 @@ A new Flutter application.
  * **5.视频播放,状态更新**
  * **6.高德定位插件,地图显示**
  * **7.ShareSDK分享**
-  
+
+# app图片
+![image](https://github.com/zhimingdev/flutter_Project/blob/master/images/Screenshot_20191213-160639.png)
+
 # 感谢
  * **鸿洋大神的 玩Android 开放API**
  * **干货集中营 API** 
