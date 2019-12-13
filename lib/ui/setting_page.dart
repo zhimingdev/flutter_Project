@@ -85,20 +85,27 @@ class _SettingPageState extends State<SettingPage> {
             Container(height: 0.8,width: double.infinity,child: Divider()),
             Container(
               height: 50,
+              alignment: Alignment.centerLeft,
               color: Colors.white,
               width: double.infinity,
               padding: EdgeInsets.all(15),
               child:
                Row(
                  children: <Widget>[
-                   Image.asset("assets/images/setting/ic_cache.png",height: 24,width: 24),
                    Container(
-                     margin: EdgeInsets.only(left: 8),
-                     child: Text('缓存大小',style: TextStyle(color: Colors.black,fontSize: 16,decoration: TextDecoration.none)),
+                     alignment: Alignment.centerLeft,
+                     child: Image.asset("assets/images/setting/ic_cache.png",height: 24,width: 24),
                    ),
                    Expanded(
                      child: Container(
-                       alignment: Alignment.centerRight,
+                       margin: EdgeInsets.only(left: 8),
+                       child: Text('清除缓存',style: TextStyle(color: Colors.black,fontSize: 16), strutStyle: StrutStyle(height: 0,leading: 0)),
+                     ),
+                     flex: 9,
+                   ),
+                   Expanded(
+                     child: Container(
+                       alignment: Alignment.centerLeft,
                        child: AndroidView(viewType: 'numberview'),
                      ),
                      flex: 1,

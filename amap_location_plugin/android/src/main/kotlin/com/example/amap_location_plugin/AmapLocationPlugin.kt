@@ -55,16 +55,13 @@ class AmapLocationPlugin internal constructor(registrar: Registrar) : MethodChan
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
-    if (call.method.equals("startLocation")) {
-      //启动定位
-      mLocationClient!!.startLocation()
-    } else if (call.method.equals("stopLocation")) {
-      //停止定位
-      mLocationClient!!.stopLocation()
-    } else if (call.method.equals("getLocation")) {
-      result.success(mLocation)
-    } else {
-      result.notImplemented()
+    when {
+      call.method.equals("startLocation") -> //启动定位
+        mLocationClient!!.startLocation()
+      call.method.equals("stopLocation") -> //停止定位
+        mLocationClient!!.stopLocation()
+      call.method.equals("getLocation") -> result.success(mLocation)
+      else -> result.notImplemented()
     }
   }
 
@@ -72,7 +69,7 @@ class AmapLocationPlugin internal constructor(registrar: Registrar) : MethodChan
     this.mEventSink = eventSink
   }
 
-  override fun onCancel(o: Any) {
+  override fun onCancel(o: Any?) {
     mLocationClient!!.stopLocation()
   }
 

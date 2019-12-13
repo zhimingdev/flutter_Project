@@ -12,8 +12,8 @@ import 'package:flutter_app/application.dart';
 import 'package:flutter_app/event/login_event.dart';
 import 'package:flutter_app/utils/customdialog_page.dart';
 import 'package:flutter_app/res/colors.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sharesdk_plugin/sharesdk_plugin.dart';
 
 class HomePage extends StatefulWidget {
   //  final String message;
@@ -59,6 +59,14 @@ class _Home extends State<HomePage> {
     //权限申请
     requestPermission();
     page = <Widget>[HallPage(), DataPage(), WelfarePage(), MinePage()];
+    registerWeChart();
+  }
+
+  void registerWeChart() {
+    ShareSDKRegister register = ShareSDKRegister();
+    register.setupWechat(
+        "wx48cafba435bef116", "37e215816d1fb6c77fdf95e6cc701cb2", "https://www.sandslee.com/");
+    SharesdkPlugin.regist(register);
   }
 
   Future<Null> getSetting() async {

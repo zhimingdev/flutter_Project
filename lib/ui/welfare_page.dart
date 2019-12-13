@@ -17,6 +17,9 @@ import 'package:flutter_app/module/video_entity.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_app/http/dio_manager.dart';
 import 'package:flutter_app/router/Routers.dart';
+import 'package:sharesdk_plugin/sharesdk_defines.dart';
+import 'package:sharesdk_plugin/sharesdk_map.dart';
+import 'package:sharesdk_plugin/sharesdk_plugin.dart';
 
 class WelfarePage extends StatefulWidget {
   @override
@@ -175,59 +178,61 @@ class WelfarePageState extends State<WelfarePage>
                   }).toList()),
             ),
             Expanded(
-              flex: 1,
-              child: Container(
-                child: TabBarView(
-                    controller: mController,
-                    children: tabList.map((String item) {
-                      return _currentIndex == 0
-                          ? RefreshIndicator(
-                        child: GridView.builder(
-                          padding: EdgeInsets.all(0),
-                            gridDelegate:
-                            SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 10.0,
-                                crossAxisSpacing: 10.0
-                            ),
-                            itemBuilder: (_, position) {
-                              if (images == null ||
-                                  images[position] == null) {
-                                return Container(
-                                  height: 80,
-                                  color: Colors.grey[100],
-                                );
-                              } else {
-                                return GestureDetector(
-                                  child: Container(
-                                    height: 120.0,
-                                    child: Image.network(images[position].url,
-                                        fit: BoxFit.fill),
-                                  ),
-                                  onTap: () {
-                                    String imageUrl = images[position].url;
-                                    Routers.router.navigateTo(context, Routers.photo+'?url=${Uri.encodeComponent(imageUrl)}');
-                                  },
-                                );
-                              }
-                            },
-                            itemCount: images.length,
-                            controller: controller
-                        ),
-                        onRefresh: getImageData,
-                      )
-                          : RefreshIndicator(
-                        child: ListView.builder(
-                          padding: EdgeInsets.all(0),
-                          controller: controller,
-                          itemBuilder: welfareItem,
-                          itemCount: videos.length + 1,
-                        ),
-                        onRefresh: fresh,
-                      );
-                    }).toList()),
-              )
-            )
+                flex: 1,
+                child: Container(
+                  child: TabBarView(
+                      controller: mController,
+                      children: tabList.map((String item) {
+                        return _currentIndex == 0
+                            ? RefreshIndicator(
+                                child: GridView.builder(
+                                    padding: EdgeInsets.all(0),
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2,
+                                            mainAxisSpacing: 10.0,
+                                            crossAxisSpacing: 10.0),
+                                    itemBuilder: (_, position) {
+                                      if (images == null ||
+                                          images[position] == null) {
+                                        return Container(
+                                          height: 80,
+                                          color: Colors.grey[100],
+                                        );
+                                      } else {
+                                        return GestureDetector(
+                                          child: Container(
+                                            height: 120.0,
+                                            child: Image.network(
+                                                images[position].url,
+                                                fit: BoxFit.fill),
+                                          ),
+                                          onTap: () {
+                                            String imageUrl =
+                                                images[position].url;
+                                            Routers.router.navigateTo(
+                                                context,
+                                                Routers.photo +
+                                                    '?url=${Uri.encodeComponent(imageUrl)}');
+                                          },
+                                        );
+                                      }
+                                    },
+                                    itemCount: images.length,
+                                    controller: controller),
+                                onRefresh: getImageData,
+                              )
+                            : RefreshIndicator(
+                                child: ListView.builder(
+                                  padding: EdgeInsets.all(0),
+                                  controller: controller,
+                                  itemBuilder: welfareItem,
+                                  itemCount: videos.length + 1,
+                                ),
+                                onRefresh: fresh,
+                              );
+                      }).toList()),
+                ))
           ],
         ),
       ),
@@ -247,6 +252,7 @@ class WelfarePageState extends State<WelfarePage>
   bool get wantKeepAlive => true;
 
   Widget welfareItem(BuildContext context, int position) {
+    SSDKMap params2;
     final style = ThemeUtils.isDark(context)
         ? TextStyles.textGray14
         : const TextStyle(color: Color(0x8A000000));
@@ -420,6 +426,40 @@ class WelfarePageState extends State<WelfarePage>
                           width: 25,
                           height: 25,
                         ),
+                        onTap: () {
+                          List<PlayInfo> playInfoList = videos[position].data.playInfo;
+                          if (playInfoList.length >= 1) {
+                            for (var playInfo in playInfoList) {
+                              if (playInfo.type == 'high') {
+                                params2 = SSDKMap()
+                                  ..setGeneral(
+                                    '娱乐学习',
+                                    videos[position].data.title,
+                                    null,
+                                    videos[position].data.author.icon,
+                                    null,
+                                    videos[position].data.author.icon,
+                                    videos[position].data.description,
+                                    videos[position].data.title,
+                                    null,
+                                    playInfo.url,
+                                    SSDKContentTypes.webpage,
+                                  );
+                              }
+                            }
+                          }
+                          SharesdkPlugin.showMenu(null, params2,
+                              (SSDKResponseState state,
+                                  ShareSDKPlatform platform,
+                                  Map userData,
+                                  Map contentEntity,
+                                  SSDKError error) {
+                            Fluttertoast.showToast(
+                                msg: userData == null
+                                    ? error.rawData.toString()
+                                    : userData.toString());
+                          });
+                        },
                       ),
                     ],
                   ),

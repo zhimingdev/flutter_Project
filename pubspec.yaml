@@ -54,7 +54,7 @@ dependencies:
   lpinyin: ^1.0.7
   flutter_floating_menu: ^0.0.2
   # 分享
-  flutter_wechat: ^0.1.5
+  sharesdk_plugin: ^1.1.7
   path_provider: ^1.5.0
   amap_location_plugin:
     path: 'amap_location_plugin/'
