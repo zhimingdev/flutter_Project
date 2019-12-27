@@ -248,9 +248,9 @@ class WelfarePageState extends State<WelfarePage>
     mController.dispose();
   }
 
-  @override
   bool get wantKeepAlive => true;
 
+  // ignore: missing_return
   Widget welfareItem(BuildContext context, int position) {
     SSDKMap params2;
     final style = ThemeUtils.isDark(context)
@@ -400,20 +400,16 @@ class WelfarePageState extends State<WelfarePage>
                               ),
                               Padding(
                                   padding: EdgeInsets.only(top: 2, bottom: 2)),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    videos[position].data.author.name,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 12,
-                                    ),
+                              Container(
+                                child: Text(
+                                  videos[position].data.author.name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 12,
                                   ),
-                                ],
+                                )
                               )
                             ],
                           ),
@@ -427,7 +423,8 @@ class WelfarePageState extends State<WelfarePage>
                           height: 25,
                         ),
                         onTap: () {
-                          List<PlayInfo> playInfoList = videos[position].data.playInfo;
+                          List<PlayInfo> playInfoList =
+                              videos[position].data.playInfo;
                           if (playInfoList.length >= 1) {
                             for (var playInfo in playInfoList) {
                               if (playInfo.type == 'high') {

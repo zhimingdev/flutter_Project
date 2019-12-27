@@ -34,6 +34,8 @@ class MainActivity: FlutterActivity() {
     newMap!!.myLocationStyle = myLocationStyle//设置定位蓝点的Style
     newMap!!.isMyLocationEnabled = true// 设置为true表示启动显示定位蓝点
     aMap!!.onCreate(savedInstanceState)
+    var totalSize = DataCleanManager.getTotalCacheSize(this)
+    Log.e("AmapError", "缓存大小:===="+totalSize)
     GeneratedPluginRegistrant.registerWith(this)
     MapRegistrant.registerWith(this,aMap,city,address)
     NumberViewRegistrant.registerView(this)

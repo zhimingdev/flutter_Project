@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/res/colors.dart';
@@ -11,6 +11,7 @@ import 'package:flutter_app/event/login_event.dart';
 import 'package:flutter_app/router/Routers.dart';
 import 'package:flutter_app/http/api_service.dart';
 import 'package:flutter_app/module/mine_integral_entity.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MinePage extends StatefulWidget {
   @override
@@ -25,8 +26,9 @@ class MinePageState extends State<MinePage> {
   var menuImage = ["zhls", "zjgl", "txzh"];
   var menuTitle = ["账户流水", "资金管理", "提现账号"];
   int integral = 0;
-  String userId ='';
+  String userId = '';
   MineIntegralData data;
+  File _image;
 
   @override
   void initState() {
@@ -34,19 +36,19 @@ class MinePageState extends State<MinePage> {
     super.initState();
     this.registerLoginEvent();
     getUserInfo();
-    if(isLogin) {
+    if (isLogin) {
       getUserIntergnal();
     }
   }
 
   void getUserIntergnal() {
-    ApiService().mineIntegral((MineIntegralEntity mineIntegralEntity){
-      if(mineIntegralEntity != null && mineIntegralEntity.errorCode == 0) {
+    ApiService().mineIntegral((MineIntegralEntity mineIntegralEntity) {
+      if (mineIntegralEntity != null && mineIntegralEntity.errorCode == 0) {
         setState(() {
           data = mineIntegralEntity.data;
           integral = mineIntegralEntity.data.coinCount;
         });
-      }else {
+      } else {
         Fluttertoast.showToast(msg: mineIntegralEntity.errorMsg);
       }
     });
@@ -140,7 +142,6 @@ class MinePageState extends State<MinePage> {
     );
   }
 
-
   Widget jifen() {
     return GestureDetector(
       child: Container(
@@ -149,24 +150,27 @@ class MinePageState extends State<MinePage> {
         color: Colors.white,
         child: Row(
           children: <Widget>[
-            Image.asset("assets/images/setting/ic_fen.png",height: 24,width: 24),
+            Image.asset("assets/images/setting/ic_fen.png",
+                height: 24, width: 24),
             Expanded(
               child: Container(
                 margin: EdgeInsets.only(left: 8),
-                child: Text("我的积分",style: TextStyle(color: Colors.black,fontSize: 16)),
+                child: Text("我的积分",
+                    style: TextStyle(color: Colors.black, fontSize: 16)),
               ),
               flex: 1,
             ),
-            Text('$integral',style: TextStyles.textDarkGray14),
+            Text('$integral', style: TextStyles.textDarkGray14),
             Container(
                 margin: EdgeInsets.only(left: 10),
-                child: Icon(Icons.arrow_forward_ios,size: 15, color: Colors.black26)
-            )
+                child: Icon(Icons.arrow_forward_ios,
+                    size: 15, color: Colors.black26))
           ],
         ),
       ),
       onTap: () {
-        Routers.router.navigateTo(context, '${Routers.integralrank}?data=${Uri.encodeComponent(json.encode(data))}');
+        Routers.router.navigateTo(context,
+            '${Routers.integralrank}?data=${Uri.encodeComponent(json.encode(data))}');
       },
     );
   }
@@ -178,7 +182,8 @@ class MinePageState extends State<MinePage> {
         width: double.infinity,
         child: Row(
           children: <Widget>[
-            Image.asset("assets/images/setting/ic_set.png",width: 24,height: 24),
+            Image.asset("assets/images/setting/ic_set.png",
+                width: 24, height: 24),
             Expanded(
               child: GestureDetector(
                 child: Container(
@@ -210,31 +215,32 @@ class MinePageState extends State<MinePage> {
 ////              image: AssetImage("images/borrow_top_bg.png"), fit: BoxFit.fill),
 //          ),
           child: Container(
-            alignment: Alignment.topLeft,
+            alignment: Alignment.centerLeft,
             height: 60,
             margin: EdgeInsets.only(bottom: 20),
             child: Flex(
               direction: Axis.horizontal,
               children: <Widget>[
                 Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 20),
-                    alignment: Alignment.center,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(6.0),
-                      child: isLogin
-                          ? FadeInImage.assetNetwork(
-                              image: path,
-                              placeholder: defaultImage,
-                            )
-                          : Image.asset(defaultImage),
+                  child: GestureDetector(
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      margin: const EdgeInsets.only(left: 20),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(6.0),
+                          child: showImage(context)),
                     ),
+                    onTap: () {
+                      uploadImage(context);
+                    },
                   ),
                   flex: 1,
                 ),
                 Expanded(
                   child: Container(
-                    margin: const EdgeInsets.only(left: 20),
+                    height: 50,
+                    margin: EdgeInsets.only(left: 8),
                     alignment: Alignment.centerLeft,
                     child: Column(
                       children: <Widget>[
@@ -246,8 +252,8 @@ class MinePageState extends State<MinePage> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 10),
                           alignment: Alignment.centerLeft,
+                          margin: EdgeInsets.only(top: 10),
                           child: Text(
                             "这个人很懒,没写哦",
                             style:
@@ -291,5 +297,109 @@ class MinePageState extends State<MinePage> {
   void gotoSetting() {
     Routers.router.navigateTo(context, Routers.setting,
         transition: TransitionType.inFromRight);
+  }
+
+  Widget showImage(BuildContext context) {
+    if (isLogin) {
+      if (_image == null) {
+        return FadeInImage.assetNetwork(
+          image: path,
+          placeholder: defaultImage,
+        );
+      } else {
+        return Image.file(_image,fit: BoxFit.fitWidth,);
+      }
+    } else {
+      return Image.asset(defaultImage);
+    }
+  }
+
+  void uploadImage(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Container(
+            alignment: Alignment.bottomLeft,
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                GestureDetector(
+                  child: Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    width: MediaQuery.of(context).size.width * 0.98,
+                    height: 45,
+                    child: Text("拍照",
+                        style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 16,
+                            decoration: TextDecoration.none)),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    getImage();
+                  },
+                ),
+                GestureDetector(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 5),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    width: MediaQuery.of(context).size.width * 0.98,
+                    height: 45,
+                    child: Text("相册",
+                        style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 16,
+                            decoration: TextDecoration.none)),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    getpicture();
+                  },
+                ),
+                GestureDetector(
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(top: 10, bottom: 10),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    width: MediaQuery.of(context).size.width * 0.98,
+                    height: 45,
+                    child: Text("取消",
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16,
+                            decoration: TextDecoration.none)),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      print('图片路劲$image');
+      _image = image;
+    });
+  }
+
+  Future getpicture() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
   }
 }
